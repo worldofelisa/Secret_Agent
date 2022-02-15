@@ -6,7 +6,6 @@ class Ending extends Story
 {
     public function footRace()
     {
-        $end = new Points();
         echo "The police begin to chase you. You now need to roll off against the police to see if you escape. Type roll in now:\n";
         $response = readline(">> ");
 
@@ -14,8 +13,8 @@ class Ending extends Story
         {
             $this->level = 8;
             echo "You didn't even try to escape... but it didn't make the judge any less sympathetic. Enjoy prison!\n";
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             $userRoll = $this->rollTheDice->diceForRolling("d20");
@@ -29,22 +28,21 @@ class Ending extends Story
             {
                 $this->level = 9;
                 echo "The police are faster than you. They manage to tackle you to the ground, wrestling the money away. You are arrested... better luck next time!\n";
-                $end->assignPoints();
-                $end->leaving();
+                $this->end->assignPoints();
+                $this->end->leaving();
             } elseif ($userRoll == $policeRoll)
             {
                 echo "The police close the distance. You throw the money at them, as a diversion. It works, and they stop to collect that, leaving you time to get away.\n";
                 $this->level = 9;
                 echo "You may have failed to get money, but at least you are free. You lay low for a while, biding your time until you can try again.\n";
-                $end->assignPoints();
-                $end->leaving();
+                $this->end->assignPoints();
+                $this->end->leaving();
             }
         }
     }
 
     public function carChase()
     {
-        $end = new Points();
         echo "The police are hot on your heels. You now need to roll off against the police to see if you escape. Type roll in now:\n";
         $response = readline(">> ");
 
@@ -52,8 +50,8 @@ class Ending extends Story
         {
             $this->level = 8;
             echo "You didn't even try to escape... but it didn't make the judge any less sympathetic. Enjoy prison!\n";
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             $userRoll = $this->rollTheDice->diceForRolling("d20");
@@ -74,21 +72,21 @@ class Ending extends Story
                     {
                         $this->level = 9;
                         echo "You survive, but are arrested. You are taken to the hospital, stabilised, and then put in prison.\n";
-                        $end->assignPoints();
-                        $end->leaving();
+                        $this->end->assignPoints();
+                        $this->end->leaving();
                     } else
                     {
                         $this->level = 9;
                         echo "You do not survive the crash, your vision blacking out just as you crash through the windshield.\nConsider wearing a seatbelt next time.\n";
-                        $end->assignPoints();
-                        $end->leaving();
+                        $this->end->assignPoints();
+                        $this->end->leaving();
                     }
                 } else
                 {
                     $this->level = 9;
                     echo "Your body was lodged in the car, and as you tried to assess the damage, you feel yourself forcibly ripped from the vehicle.\nEnjoy prison time.\n";
-                    $end->assignPoints();
-                    $end->leaving();
+                    $this->end->assignPoints();
+                    $this->end->leaving();
                 }
             } elseif ($userRoll == $policeRoll)
             {

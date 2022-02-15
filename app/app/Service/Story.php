@@ -7,6 +7,7 @@ use Illuminate\Routing\Pipeline;
 class Story
 {
     public $rollTheDice;
+    public $end;
     public $agentName;
     public $teamMembers;
     public $teamSize;
@@ -26,6 +27,7 @@ class Story
             $this->vaultCode = [rand(1, self::MAX_VAULT_CODE), rand(1, self::MAX_VAULT_CODE), rand(1, self::MAX_VAULT_CODE)];
         }
         $rollTheDice = new Dice();
+        $end = new Points();
     }
 
     /**
@@ -42,9 +44,8 @@ class Story
         if ($response !== "yes") {
             $this->level = 0;
             echo "I see. On your way then.\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else {
             echo "Good. Let's get started.\n";
             echo "You will be breaking into Currency Keepers, one of the biggest banks in the city.\n";
@@ -63,9 +64,8 @@ class Story
         if ($response != "roll") {
             $this->level = 0;
             echo "We only send in teams. Maybe you aren't right for this job after all.\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             $moreTeam = false;
@@ -109,9 +109,8 @@ class Story
         {
             $this->level = 1;
             echo "The bank is closed. Go home.\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             $rollResult = $this->rollTheDice->diceForRolling("d100");
@@ -137,16 +136,14 @@ class Story
             case $diceResult <= 25:
                 $this->level = 2;
                 echo "The gun fell out of your pocket as you entered the bank.\nThe guards noticed and arrested you and your team immediately.\nYou are now in jail... and you may need some protection!\n";
-                $end = new Points();
-                $end->assignPoints();
-                $end->leaving();
+                $this->end->assignPoints();
+                $this->end->leaving();
                 break;
             case $diceResult <= 50:
                 $this->level = 2;
                 echo "The guards found you suspicious. You and your team left the bank for fear of being caught.\n";
-                $end = new Points();
-                $end->assignPoints();
-                $end->leaving();
+                $this->end->assignPoints();
+                $this->end->leaving();
                 break;
             case $diceResult <= 100:
                 echo "You're in. Well done! You tricked the guards, who are none the wiser. Now let's see if you can get to the vault.\n";
@@ -165,9 +162,8 @@ class Story
         {
             $this->level = 2;
             echo "You and your team members begin to argue over who is meant to distract the staff. The guards hear you and arrest you. Good luck explaining this one!\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             $diceResult = $this->rollTheDice->diceForRolling("d20");
@@ -184,9 +180,8 @@ class Story
             {
                 $this->level = 3;
                 echo "Well... you stuck with your team... and the police were called.\nLet's hope chivalry is rewarded in prison, because it did you no good this time.\n";
-                $end = new Points();
-                $end->assignPoints();
-                $end->leaving();
+                $this->end->assignPoints();
+                $this->end->leaving();
             }else
             {
                 $this->teamMembers = $this->teamMembers - 1;
@@ -198,9 +193,8 @@ class Story
         {
             $this->level = 3;
             echo "The staff were suspicious and hit the alarm. You and your team made it out... barely.\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         }
 
         echo "You currently have $this->teamMembers in your team.\nThis puts your team size at $this->teamSize.\nKeep that in mind for the future.\n";
@@ -230,9 +224,8 @@ class Story
                 {
                     $this->level = 4;
                     echo "Too many incorrect passcodes. Vault is now locked. You run as the alarm begins to sound, straight into the arms of the guards.\n";
-                    $end = new Points();
-                    $end->assignPoints();
-                    $end->leaving();
+                    $this->end->assignPoints();
+                    $this->end->leaving();
                 }
             } else
             {
@@ -260,9 +253,8 @@ class Story
         {
             $this->level = 5;
             echo "You got away... but you forgot to take money with you. So much for a heist. We'll hire better people next time.\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             echo "Let's grab the money then!\n";
@@ -282,9 +274,8 @@ class Story
                 {
                     $this->level = 6;
                     echo "You go out to help your team member escape the cops and end up arrested as well.\n";
-                    $end = new Points();
-                    $end->assignPoints();
-                    $end->leaving();
+                    $this->end->assignPoints();
+                    $this->end->leaving();
                 } else
                 {
                     $this->teamSize = $this->teamSize - 1;
@@ -310,9 +301,8 @@ class Story
             $total = $result * 1000 + $money * 1000;
             $this->level = 7;
             echo "As you go to leave the bank with your \$" . $total . " you realize no one prepped the get away car.\nAs you climb inside you find yourself surrounded by the police, who have by now been alerted by the bank manager.\n";
-            $end = new Points();
-            $end->assignPoints();
-            $end->leaving();
+            $this->end->assignPoints();
+            $this->end->leaving();
         } else
         {
             $money = $this->rollTheDice->diceForRolling("d4");
@@ -339,9 +329,8 @@ class Story
                     echo "You arrive at the rendezvous spot and count the money.\nYou manage to get away with $this->moneyTotal\n";
                     $this->level = 10;
                     echo "Well done, Agent $this->agentName.\nNow take your money and go.\n";
-                    $end = new Points();
-                    $end->assignPoints();
-                    $end->success();
+                    $this->end->assignPoints();
+                    $this->end->success();
                     break;
                 case 2:
                     if ($this->teamMembers > 1)
@@ -352,9 +341,8 @@ class Story
                         {
                             $this->level = 8;
                             echo "As you argue with them about being a martyr, the police close in on the car.\nYou are both arrested, and the money is returned to the bank.\nBetter luck next time!\n";
-                            $end = new Points();
-                            $end->assignPoints();
-                            $end->leaving();
+                            $this->end->assignPoints();
+                            $this->end->leaving();
                         }else
                         {
                             $this->teamMembers = $this->teamMembers - 1;
@@ -364,9 +352,8 @@ class Story
                             echo "The car starts and you drive away.\nYou go back to base, where you hand over your prize.\n You manage to get away with $this->moneyTotal\n";
                             $this->level = 10;
                             echo "Well done, Agent $this->agentName.\nNow take your money and go.\n";
-                            $end = new Points();
-                            $end->assignPoints();
-                            $end->success();
+                            $this->end->assignPoints();
+                            $this->end->success();
                         }
                     }else
                     {
@@ -375,9 +362,8 @@ class Story
                         echo "You arrive at the rendezvous spot and count the money.\nYou manage to get away with $this->moneyTotal\n";
                         $this->level = 10;
                         echo "Well done, Agent $this->agentName.\nNow take your money and go.\n";
-                        $end = new Points();
-                        $end->assignPoints();
-                        $end->success();
+                        $this->end->assignPoints();
+                        $this->end->success();
                     }
                     break;
                 case 3:
@@ -386,17 +372,15 @@ class Story
                     echo "You arrive at the rendezvous spot and count the money.\nYou manage to get away with $this->moneyTotal\n";
                     $this->level = 10;
                     echo "Well done, Agent $this->agentName.\nNow take your money and go.\n";
-                    $end = new Points();
-                    $end->assignPoints();
-                    $end->success();
+                    $this->end->assignPoints();
+                    $this->end->success();
                     break;
                 case 4:
                     echo "The car is idling as you leave the bank. You hop in and drive away.\nYou go back to base, where you hand over your prize.\n You manage to get away with $this->moneyTotal\n";
                     $this->level = 10;
                     echo "Well done, Agent $this->agentName.\nNow take your money and go.\n";
-                    $end = new Points();
-                    $end->assignPoints();
-                    $end->success();
+                    $this->end->assignPoints();
+                    $this->end->success();
                     break;
             }
         } else

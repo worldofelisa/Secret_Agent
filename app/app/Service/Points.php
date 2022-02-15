@@ -2,15 +2,18 @@
 
 namespace App\Service;
 
+use App\Service\Story;
+
 class Points
 {
-    public function assignPoints()
+    public function assignPoints(Story $story)
     {
-        $points = new Story;
-        $story = $points->level;
-        $money = $points->moneyTotal;
-        $team = $points->teamMembers;
-        echo "You received $story points for the level you got to.\nYou have $money in the bank.\nYou had $team team members left at the end.\n";
+
+        $level = $story->level;
+        $money = $story->moneyTotal;
+        $team = $story->teamMembers;
+
+
         //ToDo: feed to db table??
     }
 
